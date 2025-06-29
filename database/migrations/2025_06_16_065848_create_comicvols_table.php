@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('comicvols', function (Blueprint $table) {
             $table->id();
             $table->integer("volume");
-            $table->string("volume_name");
+            $table->string("volume_name")->nullable();
             $table->boolean("is_collected");
             $table->foreignId('comic_id')->constrained('comics')->cascadeOnDelete();
             $table->timestamps();
