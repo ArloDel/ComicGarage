@@ -68,7 +68,7 @@ class ComicResource extends Resource
                                 '4:3',
                                 '1:1',
                             ])
-                            ->maxSize(2048)
+                            ->maxSize(5048)
                             ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp']),
                     ])
                     ->columns(2),
@@ -79,7 +79,7 @@ class ComicResource extends Resource
                             ->label('Berapa Volume yang ingin ditambahkan?')
                             ->numeric()
                             ->minValue(1)
-                            ->maxValue(50)
+                            ->maxValue(100)
                             ->default(1)
                             ->live()
                             ->afterStateUpdated(function ($state, $set, $get) {
@@ -92,7 +92,7 @@ class ComicResource extends Resource
                                         $newVolumes[] = [
                                             'volume' => $i,
                                             'volume_name' => '',
-                                            'is_collected' => false,
+                                            'is_collected' => true,
                                         ];
                                     }
                                     $set('comicvol', $newVolumes);
@@ -111,7 +111,7 @@ class ComicResource extends Resource
                                                 $newVolumes[] = [
                                                     'volume' => $i,
                                                     'volume_name' => '',
-                                                    'is_collected' => false,
+                                                    'is_collected' => true,
                                                 ];
                                             }
                                             $set('comicvol', $newVolumes);
@@ -148,6 +148,8 @@ class ComicResource extends Resource
                                     ->offIcon('heroicon-m-x-circle')
                                     ->onColor('success')
                                     ->offColor('gray')
+                                    ->default(true)
+
                             ])
                             ->columns(3)
                             ->collapsible()
@@ -189,6 +191,7 @@ class ComicResource extends Resource
                                     ->offIcon('heroicon-m-x-circle')
                                     ->onColor('success')
                                     ->offColor('gray')
+                                    ->accepted()
                             ])
                             ->columns(3)
                             ->collapsible()
