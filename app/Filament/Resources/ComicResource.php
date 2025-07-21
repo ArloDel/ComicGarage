@@ -23,6 +23,7 @@ use Filament\Forms\Components\Actions\Action;
 use App\Filament\Resources\ComicResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\ComicResource\RelationManagers;
+use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 
 class ComicResource extends Resource
 {
@@ -191,7 +192,7 @@ class ComicResource extends Resource
                                     ->offIcon('heroicon-m-x-circle')
                                     ->onColor('success')
                                     ->offColor('gray')
-                                    ->accepted()
+
                             ])
                             ->columns(3)
                             ->collapsible()
@@ -274,8 +275,10 @@ class ComicResource extends Resource
 
             ])
             ->bulkActions([
+ ExportBulkAction::make(),
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+
                 ]),
             ])
             ->defaultSort('created_at', 'desc');

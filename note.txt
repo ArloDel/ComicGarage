@@ -1,0 +1,82 @@
+Fitur Dasar (Mudah)
+Tambah Komik ke Wishlist
+
+Tombol "Tambah ke Wishlist" di halaman detail komik.
+
+Simpan ID komik dan user ID (jika ada sistem login).
+
+Tampilkan Daftar Wishlist
+
+Tampilkan semua komik yang telah ditambahkan user ke wishlist-nya.
+
+Tampilkan cover, judul, dan status (misalnya: belum rilis, sudah rilis).
+
+Hapus dari Wishlist
+
+Tombol "Hapus" atau "Sudah Dimiliki" untuk menghapus komik dari daftar.
+
+Status Baca
+
+Tambahkan tag sederhana seperti: “Ingin Beli”, “Ingin Baca”, “Rilis Nanti”.
+
+🟡 Fitur Menengah
+Pengelompokan atau Kategori
+
+User bisa buat kategori sendiri seperti: "Shonen", "One Shot", "Komik Webtoon", dll.
+
+Notifikasi Rilis
+
+Sistem kirim notifikasi (email atau di dashboard) saat komik dalam wishlist sudah rilis atau tersedia.
+
+Tanggal Target
+
+User bisa set target kapan ingin membeli atau membaca komik tersebut.
+
+Catatan Pribadi
+
+Tambahkan kolom catatan: misalnya "Lanjut baca dari chapter 10" atau "Cari edisi bahasa Jepang".
+
+Integrasi dengan Koleksi
+
+Tombol "Pindah ke Koleksi Saya" setelah user mendapatkan atau membaca komik tersebut.
+
+🔴 Fitur Kompleks / Advanced
+Progress Tracker
+
+User bisa centang chapter atau volume yang sudah dibaca, dan sistem menyimpan progresnya.
+
+Prioritas Wishlist
+
+User bisa mengurutkan berdasarkan prioritas (tinggi, sedang, rendah), atau drag-and-drop urutan manual.
+
+Rekomendasi Otomatis
+
+Berdasarkan wishlist user, tampilkan rekomendasi komik serupa (dengan sistem tag atau genre matching).
+
+Perbandingan Harga / Tautan Pembelian
+
+Tambahkan integrasi dengan marketplace (Tokopedia, Shopee, Amazon) untuk melihat harga dan beli langsung.
+
+Share Wishlist
+
+Fitur untuk membagikan wishlist ke teman lewat link publik atau QR code (misal untuk hadiah/ide kado).
+
+Import / Export Wishlist
+
+Ekspor ke file CSV/JSON atau import dari file untuk backup atau pindah sistem.
+
+🔧 Teknologi Pendukung (Opsional)
+Gunakan Filament PHP untuk panel admin user (wishlist user dan semua data terkait).
+
+Gunakan Laravel Notifications untuk notifikasi rilis komik.
+
+Gunakan Laravel Scheduler untuk memeriksa update otomatis.
+
+Gunakan Spatie Tags atau tagging system agar bisa mengelompokkan komik.
+
+Kalau kamu ingin, aku bisa bantu buatkan struktur database atau wireframe antarmuka panel wishlist ini juga. Mau dilanjut ke situ?
+
+
+
+
+Ask ChatGPT
