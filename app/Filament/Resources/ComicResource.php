@@ -275,10 +275,10 @@ class ComicResource extends Resource
 
             ])
             ->bulkActions([
- ExportBulkAction::make(),
+
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
-
+ExportBulkAction::make(),
                 ]),
             ])
             ->defaultSort('created_at', 'desc');
