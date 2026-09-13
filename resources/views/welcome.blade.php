@@ -295,7 +295,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: url('{{ asset("storage/manga wallpaper.jpg") }}');
+            background-image: url('{{ asset("storage/manga wallpaper.png") }}');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
