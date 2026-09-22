@@ -5,11 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ComicGarage — Japanese Manga & Graphic Novel Vault</title>
     
-    <!-- Fonts & Scripts -->
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
-    <script src="https://www.youtube.com/iframe_api"></script>
     
     <style>
         :root {
@@ -2629,7 +2628,14 @@
             <!-- Optional Video Drawer Screen (Open by default) -->
             <div class="bgm-video-drawer is-open" id="bgmVideoDrawer">
                 <div class="bgm-iframe-wrapper" id="bgmIframeTarget">
-                    <div id="ambient-yt-player"></div>
+                    <iframe id="ambient-yt-player" 
+                        src="https://www.youtube-nocookie.com/embed/DkPjOnUr4M4?enablejsapi=1&playsinline=1&rel=0&controls=1&modestbranding=1" 
+                        title="YouTube Ambient Audio Player" 
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                        allowfullscreen
+                        style="width: 100%; height: 100%; border: 0; display: block; border-radius: 8px;">
+                    </iframe>
                 </div>
             </div>
 
@@ -2959,7 +2965,6 @@
         let bgmVolume = 80;
         let bgmProgressTimer = null;
         let isVideoDrawerOpen = true;
-        let playRequestedBeforeReady = false;
 
         // Elements
         const bgmWidget = document.getElementById('bgmPlayerWidget');
@@ -3021,6 +3026,22 @@
             return (m < 10 ? '0' + m : m) + ':' + formattedSeconds;
         }
 
+        // Direct PostMessage Helper to YouTube Iframe
+        function sendPostMessageToYt(func, args) {
+            const iframe = document.getElementById('ambient-yt-player');
+            if (iframe && iframe.contentWindow) {
+                try {
+                    iframe.contentWindow.postMessage(JSON.stringify({
+                        event: 'command',
+                        func: func,
+                        args: args || []
+                    }), '*');
+                } catch (e) {
+                    console.warn('PostMessage error to YouTube iframe:', e);
+                }
+            }
+        }
+
         // Update UI state
         function setPlayingUIState(playing) {
             isBgmPlaying = playing;
@@ -3049,18 +3070,24 @@
             }
         }
 
+        function updateProgressUI(cur, dur) {
+            if (dur > 0) {
+                const pct = Math.min(100, Math.max(0, (cur / dur) * 100));
+                if (bgmProgressFill) bgmProgressFill.style.width = pct + '%';
+                if (bgmCurrentTimeEl) bgmCurrentTimeEl.textContent = formatBgmTime(cur);
+                if (bgmTotalDurationEl) bgmTotalDurationEl.textContent = formatBgmTime(dur);
+            }
+        }
+
         function startProgressTracker() {
             stopProgressTracker();
             bgmProgressTimer = setInterval(function() {
                 if (ytPlayer && typeof ytPlayer.getCurrentTime === 'function' && typeof ytPlayer.getDuration === 'function') {
-                    const cur = ytPlayer.getCurrentTime();
-                    const dur = ytPlayer.getDuration();
-                    if (dur > 0) {
-                        const pct = Math.min(100, (cur / dur) * 100);
-                        if (bgmProgressFill) bgmProgressFill.style.width = pct + '%';
-                        if (bgmCurrentTimeEl) bgmCurrentTimeEl.textContent = formatBgmTime(cur);
-                        if (bgmTotalDurationEl) bgmTotalDurationEl.textContent = formatBgmTime(dur);
-                    }
+                    try {
+                        const cur = ytPlayer.getCurrentTime();
+                        const dur = ytPlayer.getDuration();
+                        updateProgressUI(cur, dur);
+                    } catch (e) {}
                 }
             }, 500);
         }
@@ -3072,25 +3099,42 @@
             }
         }
 
-        // Toggle playback
+        // Toggle playback with Dual-Layer Fallback
         function toggleBgmPlay() {
-            if (!isYtReady || !ytPlayer) {
-                playRequestedBeforeReady = true;
-                if (bgmPillStatusText) bgmPillStatusText.textContent = 'Loading...';
-                if (navBgmState) navBgmState.textContent = '...';
-                loadYouTubeApi();
-                return;
-            }
-
-            try {
-                const state = (typeof ytPlayer.getPlayerState === 'function') ? ytPlayer.getPlayerState() : -1;
-                if (state === 1) { // YT.PlayerState.PLAYING
-                    ytPlayer.pauseVideo();
+            if (isBgmPlaying) {
+                // Pause
+                if (ytPlayer && typeof ytPlayer.pauseVideo === 'function') {
+                    try { ytPlayer.pauseVideo(); } catch (e) { sendPostMessageToYt('pauseVideo'); }
                 } else {
-                    ytPlayer.playVideo();
+                    sendPostMessageToYt('pauseVideo');
                 }
-            } catch (err) {
-                console.error('Error toggling BGM playback', err);
+                setPlayingUIState(false);
+            } else {
+                // Play
+                if (bgmPillStatusText) bgmPillStatusText.textContent = 'Playing...';
+                if (navBgmState) navBgmState.textContent = '...';
+
+                if (ytPlayer && typeof ytPlayer.playVideo === 'function') {
+                    try {
+                        if (isBgmMuted && typeof ytPlayer.unMute === 'function') {
+                            ytPlayer.unMute();
+                            isBgmMuted = false;
+                        }
+                        if (typeof ytPlayer.setVolume === 'function') {
+                            ytPlayer.setVolume(bgmVolume || 80);
+                        }
+                        ytPlayer.playVideo();
+                    } catch (e) {
+                        sendPostMessageToYt('unMute');
+                        sendPostMessageToYt('setVolume', [bgmVolume || 80]);
+                        sendPostMessageToYt('playVideo');
+                    }
+                } else {
+                    sendPostMessageToYt('unMute');
+                    sendPostMessageToYt('setVolume', [bgmVolume || 80]);
+                    sendPostMessageToYt('playVideo');
+                }
+                setPlayingUIState(true);
             }
         }
 
@@ -3098,21 +3142,8 @@
         function initYouTubePlayer() {
             if (ytPlayer || !window.YT || !window.YT.Player) return;
 
-            const playerVars = {
-                autoplay: 0,
-                controls: 1,
-                modestbranding: 1,
-                rel: 0,
-                playsinline: 1,
-                enablejsapi: 1
-            };
-
             try {
                 ytPlayer = new YT.Player('ambient-yt-player', {
-                    height: '100%',
-                    width: '100%',
-                    videoId: BGM_VIDEO_ID,
-                    playerVars: playerVars,
                     events: {
                         'onReady': function(event) {
                             isYtReady = true;
@@ -3126,11 +3157,6 @@
                                     bgmTrackTitleEl.textContent = data.title;
                                 }
                             } catch (e) {}
-
-                            if (playRequestedBeforeReady) {
-                                playRequestedBeforeReady = false;
-                                event.target.playVideo();
-                            }
                         },
                         'onStateChange': function(event) {
                             if (event.data === 1) { // PLAYING
@@ -3143,32 +3169,66 @@
                                 } catch (e) {}
                             } else if (event.data === 2) { // PAUSED
                                 setPlayingUIState(false);
-                            } else if (event.data === 0) { // ENDED (Auto-loop fallback)
-                                event.target.seekTo(0);
-                                event.target.playVideo();
+                            } else if (event.data === 0) { // ENDED (Loop track)
+                                try {
+                                    event.target.seekTo(0);
+                                    event.target.playVideo();
+                                } catch (e) {
+                                    sendPostMessageToYt('seekTo', [0, true]);
+                                    sendPostMessageToYt('playVideo');
+                                }
                             } else if (event.data === 3) { // BUFFERING
                                 if (bgmPillStatusText) bgmPillStatusText.textContent = 'Buffering...';
                             }
                         },
                         'onError': function(err) {
-                            console.warn('YouTube Ambient Player status:', err);
-                            setPlayingUIState(false);
-                            if (bgmPillStatusText) bgmPillStatusText.textContent = 'Error';
-                            if (bgmTrackTitleEl) bgmTrackTitleEl.textContent = 'Playback error (Klik link YouTube)';
+                            console.warn('YouTube Player error event:', err);
+                            if (bgmPillStatusText) bgmPillStatusText.textContent = 'Tap to Play';
+                            if (bgmTrackTitleEl) bgmTrackTitleEl.textContent = 'Lofi Remix • Japanese Chill (Tap video screen)';
                         }
                     }
                 });
             } catch (initErr) {
-                console.warn('Could not initialize YT Player:', initErr);
+                console.warn('YT.Player wrapper fallback active:', initErr);
             }
         }
 
-        // YouTube IFrame API Callback
+        // Listen to raw PostMessage notifications from YouTube iframe
+        window.addEventListener('message', function(event) {
+            if (event.origin && !event.origin.includes('youtube')) return;
+            try {
+                let data = event.data;
+                if (typeof data === 'string') {
+                    data = JSON.parse(data);
+                }
+                if (data && data.event === 'onStateChange') {
+                    if (data.info === 1) {
+                        setPlayingUIState(true);
+                    } else if (data.info === 2) {
+                        setPlayingUIState(false);
+                    }
+                } else if (data && data.event === 'infoDelivery' && data.info) {
+                    if (typeof data.info.playerState !== 'undefined') {
+                        if (data.info.playerState === 1) setPlayingUIState(true);
+                        else if (data.info.playerState === 2) setPlayingUIState(false);
+                    }
+                    if (typeof data.info.currentTime !== 'undefined' && typeof data.info.duration !== 'undefined') {
+                        updateProgressUI(data.info.currentTime, data.info.duration);
+                    }
+                    if (data.info.videoData && data.info.videoData.title && bgmTrackTitleEl) {
+                        bgmTrackTitleEl.textContent = data.info.videoData.title;
+                    }
+                }
+            } catch (err) {}
+        });
+
+        // Set global YouTube API callback before loading script
         window.onYouTubeIframeAPIReady = function() {
             initYouTubePlayer();
         };
 
-        function loadYouTubeApi() {
+        // Load YouTube IFrame API Script asynchronously with Polling
+        (function loadYouTubeApiScript() {
             if (window.YT && window.YT.Player) {
                 initYouTubePlayer();
                 return;
@@ -3176,22 +3236,27 @@
             if (!document.querySelector('script[src*="youtube.com/iframe_api"]')) {
                 const tag = document.createElement('script');
                 tag.src = "https://www.youtube.com/iframe_api";
-                tag.onerror = function() {
-                    console.warn('Could not load YouTube IFrame API script');
-                    if (bgmPillStatusText) bgmPillStatusText.textContent = 'API Blocked';
-                    if (bgmTrackTitleEl) bgmTrackTitleEl.textContent = 'YouTube API Blocked (Click link above to open)';
-                };
+                tag.async = true;
                 const firstScriptTag = document.getElementsByTagName('script')[0];
-                firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+                if (firstScriptTag && firstScriptTag.parentNode) {
+                    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+                } else {
+                    document.head.appendChild(tag);
+                }
             }
-        }
 
-        // Initialize or load YouTube API
-        if (window.YT && window.YT.Player) {
-            initYouTubePlayer();
-        } else {
-            loadYouTubeApi();
-        }
+            // Guaranteed Polling Interval (up to 15s)
+            let attempts = 0;
+            const checkInterval = setInterval(function() {
+                attempts++;
+                if (window.YT && window.YT.Player) {
+                    initYouTubePlayer();
+                    clearInterval(checkInterval);
+                } else if (attempts > 75) {
+                    clearInterval(checkInterval);
+                }
+            }, 200);
+        })();
 
         // Control button bindings
         if (bgmMainPlayBtn) {
@@ -3249,10 +3314,21 @@
         if (bgmRestartBtn) {
             bgmRestartBtn.addEventListener('click', function() {
                 if (ytPlayer && typeof ytPlayer.seekTo === 'function') {
-                    ytPlayer.seekTo(0, true);
-                    if (!isBgmPlaying && typeof ytPlayer.playVideo === 'function') {
-                        ytPlayer.playVideo();
+                    try {
+                        ytPlayer.seekTo(0, true);
+                        if (!isBgmPlaying && typeof ytPlayer.playVideo === 'function') {
+                            ytPlayer.playVideo();
+                            setPlayingUIState(true);
+                        }
+                    } catch (e) {
+                        sendPostMessageToYt('seekTo', [0, true]);
+                        sendPostMessageToYt('playVideo');
+                        setPlayingUIState(true);
                     }
+                } else {
+                    sendPostMessageToYt('seekTo', [0, true]);
+                    sendPostMessageToYt('playVideo');
+                    setPlayingUIState(true);
                 }
             });
         }
@@ -3261,8 +3337,14 @@
         if (bgmForwardBtn) {
             bgmForwardBtn.addEventListener('click', function() {
                 if (ytPlayer && typeof ytPlayer.getCurrentTime === 'function' && typeof ytPlayer.seekTo === 'function') {
-                    const cur = ytPlayer.getCurrentTime();
-                    ytPlayer.seekTo(cur + 10, true);
+                    try {
+                        const cur = ytPlayer.getCurrentTime();
+                        ytPlayer.seekTo(cur + 10, true);
+                    } catch (e) {
+                        sendPostMessageToYt('seekTo', [10, true]);
+                    }
+                } else {
+                    sendPostMessageToYt('seekTo', [10, true]);
                 }
             });
         }
@@ -3270,20 +3352,31 @@
         // Mute / Unmute
         if (bgmMuteBtn) {
             bgmMuteBtn.addEventListener('click', function() {
-                if (!ytPlayer) return;
                 isBgmMuted = !isBgmMuted;
                 if (isBgmMuted) {
-                    if (typeof ytPlayer.mute === 'function') ytPlayer.mute();
+                    if (ytPlayer && typeof ytPlayer.mute === 'function') {
+                        try { ytPlayer.mute(); } catch (e) { sendPostMessageToYt('mute'); }
+                    } else {
+                        sendPostMessageToYt('mute');
+                    }
                     if (volHighIcon) volHighIcon.style.display = 'none';
                     if (volMuteIcon) volMuteIcon.style.display = 'block';
                 } else {
-                    if (typeof ytPlayer.unMute === 'function') ytPlayer.unMute();
+                    if (ytPlayer && typeof ytPlayer.unMute === 'function') {
+                        try { ytPlayer.unMute(); } catch (e) { sendPostMessageToYt('unMute'); }
+                    } else {
+                        sendPostMessageToYt('unMute');
+                    }
                     if (volHighIcon) volHighIcon.style.display = 'block';
                     if (volMuteIcon) volMuteIcon.style.display = 'none';
                     if (bgmVolume === 0) {
                         bgmVolume = 50;
                         if (bgmVolumeSlider) bgmVolumeSlider.value = 50;
-                        if (typeof ytPlayer.setVolume === 'function') ytPlayer.setVolume(50);
+                        if (ytPlayer && typeof ytPlayer.setVolume === 'function') {
+                            try { ytPlayer.setVolume(50); } catch (e) { sendPostMessageToYt('setVolume', [50]); }
+                        } else {
+                            sendPostMessageToYt('setVolume', [50]);
+                        }
                         try { localStorage.setItem('comicgarage_bgm_vol', 50); } catch (err) {}
                     }
                 }
@@ -3295,18 +3388,29 @@
             bgmVolumeSlider.addEventListener('input', function(e) {
                 bgmVolume = parseInt(e.target.value, 10);
                 if (ytPlayer && typeof ytPlayer.setVolume === 'function') {
-                    ytPlayer.setVolume(bgmVolume);
-                    if (bgmVolume > 0 && isBgmMuted) {
-                        isBgmMuted = false;
-                        if (typeof ytPlayer.unMute === 'function') ytPlayer.unMute();
-                        if (volHighIcon) volHighIcon.style.display = 'block';
-                        if (volMuteIcon) volMuteIcon.style.display = 'none';
-                    } else if (bgmVolume === 0 && !isBgmMuted) {
-                        isBgmMuted = true;
-                        if (typeof ytPlayer.mute === 'function') ytPlayer.mute();
-                        if (volHighIcon) volHighIcon.style.display = 'none';
-                        if (volMuteIcon) volMuteIcon.style.display = 'block';
+                    try { ytPlayer.setVolume(bgmVolume); } catch (err) { sendPostMessageToYt('setVolume', [bgmVolume]); }
+                } else {
+                    sendPostMessageToYt('setVolume', [bgmVolume]);
+                }
+
+                if (bgmVolume > 0 && isBgmMuted) {
+                    isBgmMuted = false;
+                    if (ytPlayer && typeof ytPlayer.unMute === 'function') {
+                        try { ytPlayer.unMute(); } catch (err) { sendPostMessageToYt('unMute'); }
+                    } else {
+                        sendPostMessageToYt('unMute');
                     }
+                    if (volHighIcon) volHighIcon.style.display = 'block';
+                    if (volMuteIcon) volMuteIcon.style.display = 'none';
+                } else if (bgmVolume === 0 && !isBgmMuted) {
+                    isBgmMuted = true;
+                    if (ytPlayer && typeof ytPlayer.mute === 'function') {
+                        try { ytPlayer.mute(); } catch (err) { sendPostMessageToYt('mute'); }
+                    } else {
+                        sendPostMessageToYt('mute');
+                    }
+                    if (volHighIcon) volHighIcon.style.display = 'none';
+                    if (volMuteIcon) volMuteIcon.style.display = 'block';
                 }
                 try { localStorage.setItem('comicgarage_bgm_vol', bgmVolume); } catch (err) {}
             });
@@ -3315,13 +3419,21 @@
         // Seek Bar Click
         if (bgmProgressContainer) {
             bgmProgressContainer.addEventListener('click', function(e) {
-                if (!ytPlayer || typeof ytPlayer.getDuration !== 'function' || typeof ytPlayer.seekTo !== 'function') return;
                 const rect = bgmProgressContainer.getBoundingClientRect();
                 const clickX = e.clientX - rect.left;
                 const ratio = Math.max(0, Math.min(1, clickX / rect.width));
-                const dur = ytPlayer.getDuration();
-                if (dur > 0) {
-                    ytPlayer.seekTo(dur * ratio, true);
+
+                if (ytPlayer && typeof ytPlayer.getDuration === 'function' && typeof ytPlayer.seekTo === 'function') {
+                    try {
+                        const dur = ytPlayer.getDuration();
+                        if (dur > 0) {
+                            ytPlayer.seekTo(dur * ratio, true);
+                        }
+                    } catch (err) {
+                        sendPostMessageToYt('seekTo', [ratio * 100, true]);
+                    }
+                } else {
+                    sendPostMessageToYt('seekTo', [ratio * 100, true]);
                 }
             });
         }
