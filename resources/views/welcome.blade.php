@@ -1697,6 +1697,47 @@
             border-color: rgba(230, 57, 70, 0.3);
         }
 
+        /* Station Switcher Chips */
+        .bgm-station-bar {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            overflow-x: auto;
+            padding-bottom: 6px;
+            margin-bottom: 10px;
+            scrollbar-width: none;
+        }
+        .bgm-station-bar::-webkit-scrollbar {
+            display: none;
+        }
+        .bgm-station-chip {
+            padding: 4px 9px;
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-muted);
+            font-size: 0.68rem;
+            font-family: var(--font-mono);
+            font-weight: 500;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .bgm-station-chip:hover {
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.08);
+            border-color: var(--border-strong);
+        }
+        .bgm-station-chip.is-active {
+            background: rgba(230, 57, 70, 0.15);
+            border-color: rgba(230, 57, 70, 0.4);
+            color: #ffffff;
+            font-weight: 600;
+        }
+
         /* Video Drawer Container */
         .bgm-video-drawer {
             height: 0;
@@ -1720,6 +1761,7 @@
         .bgm-iframe-wrapper {
             width: 100%;
             height: 185px;
+            position: relative;
         }
 
         .bgm-iframe-wrapper iframe,
@@ -1728,6 +1770,46 @@
             height: 100% !important;
             border: 0;
             display: block;
+        }
+
+        /* Error / Restriction Overlay */
+        .bgm-embed-warning {
+            display: none;
+            position: absolute;
+            inset: 0;
+            background: rgba(15, 17, 23, 0.94);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 10;
+            padding: 16px;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            gap: 8px;
+            border-radius: 8px;
+        }
+        .bgm-embed-warning.is-visible {
+            display: flex;
+        }
+        .bgm-embed-warning p {
+            font-size: 0.72rem;
+            color: var(--text-secondary);
+            line-height: 1.35;
+            max-width: 260px;
+        }
+        .bgm-embed-warning a, .bgm-embed-warning button {
+            font-size: 0.7rem;
+            padding: 5px 11px;
+            border-radius: 6px;
+            font-family: var(--font-mono);
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.15s ease;
         }
 
         /* Track Info Box */
@@ -2625,17 +2707,47 @@
                 </div>
             </div>
 
+            <!-- Station Selector Tabs -->
+            <div class="bgm-station-bar" id="bgmStationBar">
+                <button class="bgm-station-chip is-active" data-video-id="jfKfPfyJRdk" data-title="Lofi Girl • 24/7 Anime Lofi Beats" type="button" title="Live 24/7 Lofi Stream">
+                    <span>⚡ Lofi Live</span>
+                </button>
+                <button class="bgm-station-chip" data-video-id="5qap5aO4i9A" data-title="Studio Ghibli • Chill Anime Lounge" type="button" title="Relaxing Ghibli Beats">
+                    <span>🌸 Ghibli Lofi</span>
+                </button>
+                <button class="bgm-station-chip" data-video-id="TURbeWK2wwg" data-title="4 A.M Manga Reading Session" type="button" title="Late Night Manga Reading">
+                    <span>🌙 4 A.M Chill</span>
+                </button>
+                <button class="bgm-station-chip" data-video-id="DkPjOnUr4M4" data-title="Anime Openings Lofi Mix (LlamaLoops)" type="button" title="User Mix (DkPjOnUr4M4)">
+                    <span>📻 User Mix</span>
+                </button>
+            </div>
+
             <!-- Optional Video Drawer Screen (Open by default) -->
             <div class="bgm-video-drawer is-open" id="bgmVideoDrawer">
                 <div class="bgm-iframe-wrapper" id="bgmIframeTarget">
                     <iframe id="ambient-yt-player" 
-                        src="https://www.youtube-nocookie.com/embed/DkPjOnUr4M4?enablejsapi=1&playsinline=1&rel=0&controls=1&modestbranding=1" 
+                        src="https://www.youtube.com/embed/jfKfPfyJRdk?enablejsapi=1&playsinline=1&rel=0&controls=1&modestbranding=1" 
                         title="YouTube Ambient Audio Player" 
                         frameborder="0" 
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                        referrerpolicy="strict-origin-when-cross-origin"
                         allowfullscreen
                         style="width: 100%; height: 100%; border: 0; display: block; border-radius: 8px;">
                     </iframe>
+                    <!-- Error / Restriction Overlay -->
+                    <div class="bgm-embed-warning" id="bgmEmbedWarning">
+                        <div style="font-size: 1.15rem;">⚠️</div>
+                        <p id="bgmWarningText">Video ini membatasi pemutaran embed oleh pemilik hak cipta YouTube.</p>
+                        <div style="display: flex; gap: 8px; flex-wrap: wrap; justify-content: center;">
+                            <a id="bgmOpenYtDirectLink" href="https://www.youtube.com/watch?v=DkPjOnUr4M4&list=RDDkPjOnUr4M4" target="_blank" rel="noopener noreferrer" style="background: var(--accent-crimson); color: #fff; border: 1px solid rgba(255,255,255,0.2);">
+                                Buka di YouTube Tab ↗
+                            </a>
+                            <button id="bgmAutoSwitchBtn" type="button" style="background: var(--bg-surface-elevated); color: var(--text-primary); border: 1px solid var(--border-strong);">
+                                Ganti ke Lofi Live ⚡
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -2957,7 +3069,7 @@
         // ==========================================
         // Ambient YouTube Audio Deck Controller
         // ==========================================
-        const BGM_VIDEO_ID = 'DkPjOnUr4M4';
+        let currentVideoId = 'jfKfPfyJRdk';
         let ytPlayer = null;
         let isYtReady = false;
         let isBgmPlaying = false;
@@ -2984,6 +3096,10 @@
         const bgmCurrentTimeEl = document.getElementById('bgmCurrentTime');
         const bgmTotalDurationEl = document.getElementById('bgmTotalDuration');
         const bgmTrackTitleEl = document.getElementById('bgmTrackTitle');
+        const bgmEmbedWarning = document.getElementById('bgmEmbedWarning');
+        const bgmAutoSwitchBtn = document.getElementById('bgmAutoSwitchBtn');
+        const bgmOpenYtDirectLink = document.getElementById('bgmOpenYtDirectLink');
+        const stationChips = document.querySelectorAll('.bgm-station-chip');
         const navBgmBtn = document.getElementById('navBgmBtn');
         const navBgmState = document.getElementById('navBgmState');
         const pillPlayIcon = document.getElementById('pillPlayIcon');
@@ -2995,6 +3111,10 @@
 
         // Load saved preferences & initial viewport state
         try {
+            const savedStation = localStorage.getItem('comicgarage_bgm_station');
+            if (savedStation) {
+                currentVideoId = savedStation;
+            }
             const savedCollapsed = localStorage.getItem('comicgarage_bgm_collapsed');
             if (savedCollapsed === 'true' || (savedCollapsed === null && window.innerWidth <= 768)) {
                 if (bgmWidget) bgmWidget.classList.add('is-collapsed');
@@ -3099,6 +3219,54 @@
             }
         }
 
+        // Switch Active Station / Video Stream
+        function switchStation(videoId, title, startPlay) {
+            currentVideoId = videoId;
+            if (bgmEmbedWarning) bgmEmbedWarning.classList.remove('is-visible');
+
+            // Update Active Chip
+            stationChips.forEach(chip => {
+                if (chip.getAttribute('data-video-id') === videoId) {
+                    chip.classList.add('is-active');
+                } else {
+                    chip.classList.remove('is-active');
+                }
+            });
+
+            if (title && bgmTrackTitleEl) {
+                bgmTrackTitleEl.textContent = title;
+            }
+
+            if (bgmOpenYtDirectLink) {
+                bgmOpenYtDirectLink.href = `https://www.youtube.com/watch?v=${videoId}`;
+            }
+
+            try {
+                localStorage.setItem('comicgarage_bgm_station', videoId);
+            } catch (e) {}
+
+            const iframe = document.getElementById('ambient-yt-player');
+
+            if (ytPlayer && typeof ytPlayer.loadVideoById === 'function') {
+                try {
+                    if (startPlay) {
+                        ytPlayer.loadVideoById(videoId);
+                        setPlayingUIState(true);
+                    } else {
+                        ytPlayer.cueVideoById(videoId);
+                    }
+                } catch (e) {
+                    if (iframe) {
+                        iframe.src = `https://www.youtube.com/embed/${videoId}?enablejsapi=1&playsinline=1&rel=0&controls=1&modestbranding=1${startPlay ? '&autoplay=1' : ''}`;
+                    }
+                    if (startPlay) setPlayingUIState(true);
+                }
+            } else if (iframe) {
+                iframe.src = `https://www.youtube.com/embed/${videoId}?enablejsapi=1&playsinline=1&rel=0&controls=1&modestbranding=1${startPlay ? '&autoplay=1' : ''}`;
+                if (startPlay) setPlayingUIState(true);
+            }
+        }
+
         // Toggle playback with Dual-Layer Fallback
         function toggleBgmPlay() {
             if (isBgmPlaying) {
@@ -3161,6 +3329,7 @@
                         'onStateChange': function(event) {
                             if (event.data === 1) { // PLAYING
                                 setPlayingUIState(true);
+                                if (bgmEmbedWarning) bgmEmbedWarning.classList.remove('is-visible');
                                 try {
                                     const data = event.target.getVideoData();
                                     if (data && data.title && bgmTrackTitleEl) {
@@ -3182,9 +3351,14 @@
                             }
                         },
                         'onError': function(err) {
-                            console.warn('YouTube Player error event:', err);
-                            if (bgmPillStatusText) bgmPillStatusText.textContent = 'Tap to Play';
-                            if (bgmTrackTitleEl) bgmTrackTitleEl.textContent = 'Lofi Remix • Japanese Chill (Tap video screen)';
+                            console.warn('YouTube Player error code:', err.data || err);
+                            // Error 101 or 150 = The video cannot be played in embedded players due to copyright/owner restrictions
+                            if (err.data === 150 || err.data === 101 || err.data === 100 || err.data === 2) {
+                                if (bgmEmbedWarning) bgmEmbedWarning.classList.add('is-visible');
+                                if (bgmPillStatusText) bgmPillStatusText.textContent = 'Embed Blocked';
+                            } else {
+                                if (bgmPillStatusText) bgmPillStatusText.textContent = 'Tap to Play';
+                            }
                         }
                     }
                 });
@@ -3204,13 +3378,18 @@
                 if (data && data.event === 'onStateChange') {
                     if (data.info === 1) {
                         setPlayingUIState(true);
+                        if (bgmEmbedWarning) bgmEmbedWarning.classList.remove('is-visible');
                     } else if (data.info === 2) {
                         setPlayingUIState(false);
                     }
                 } else if (data && data.event === 'infoDelivery' && data.info) {
                     if (typeof data.info.playerState !== 'undefined') {
-                        if (data.info.playerState === 1) setPlayingUIState(true);
-                        else if (data.info.playerState === 2) setPlayingUIState(false);
+                        if (data.info.playerState === 1) {
+                            setPlayingUIState(true);
+                            if (bgmEmbedWarning) bgmEmbedWarning.classList.remove('is-visible');
+                        } else if (data.info.playerState === 2) {
+                            setPlayingUIState(false);
+                        }
                     }
                     if (typeof data.info.currentTime !== 'undefined' && typeof data.info.duration !== 'undefined') {
                         updateProgressUI(data.info.currentTime, data.info.duration);
@@ -3257,6 +3436,24 @@
                 }
             }, 200);
         })();
+
+        // Station Chip Clicks
+        stationChips.forEach(chip => {
+            chip.addEventListener('click', function() {
+                const videoId = this.getAttribute('data-video-id');
+                const title = this.getAttribute('data-title');
+                if (videoId) {
+                    switchStation(videoId, title, true);
+                }
+            });
+        });
+
+        // Auto Switch Button (Fallback from restricted embed)
+        if (bgmAutoSwitchBtn) {
+            bgmAutoSwitchBtn.addEventListener('click', function() {
+                switchStation('jfKfPfyJRdk', 'Lofi Girl • 24/7 Anime Lofi Beats', true);
+            });
+        }
 
         // Control button bindings
         if (bgmMainPlayBtn) {
