@@ -5,6 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ComicGarage — Japanese Manga & Graphic Novel Vault</title>
     
+    <!-- Favicon & Metadata -->
+    <link rel="icon" type="image/svg+xml" href="{{ asset('logo.svg') }}">
+    <link rel="alternate icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
+    <link rel="apple-touch-icon" href="{{ asset('logo.svg') }}">
+    <meta name="theme-color" content="#e63946">
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -2070,12 +2076,7 @@
             <div class="nav-inner">
                 <a href="/" class="brand-link">
                     <div class="brand-icon">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/>
-                            <path d="M6 6h10"/>
-                            <path d="M6 10h10"/>
-                            <path d="M6 14h6"/>
-                        </svg>
+                        <img src="{{ asset('logo.svg') }}" alt="ComicGarage Logo" style="width: 24px; height: 24px; object-fit: contain; border-radius: 4px;">
                     </div>
                     <div class="brand-text">
                         <span class="brand-title">ComicGarage</span>

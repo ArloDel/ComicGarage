@@ -1,0 +1,540 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 780" width="100%" height="100%" style="background:#08090d; border-radius: 12px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;">
+  <defs>
+    <!-- Background Linear & Radial Gradients -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0c0e14" />
+      <stop offset="50%" stop-color="#08090d" />
+      <stop offset="100%" stop-color="#12151f" />
+    </linearGradient>
+
+    <linearGradient id="crimsonGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#e63946" />
+      <stop offset="100%" stop-color="#ff4d5a" />
+    </linearGradient>
+
+    <linearGradient id="emeraldGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#10b981" />
+      <stop offset="100%" stop-color="#34d399" />
+    </linearGradient>
+
+    <linearGradient id="amberGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#f59e0b" />
+      <stop offset="100%" stop-color="#fbbf24" />
+    </linearGradient>
+
+    <linearGradient id="cardGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#181c28" />
+      <stop offset="100%" stop-color="#0f1118" />
+    </linearGradient>
+
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="6" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+
+    <filter id="subtleGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="3" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+
+    <!-- Keyframe Styles -->
+    <style>
+      .pulse-dot {
+        animation: pulseAnimation 2s infinite ease-in-out;
+      }
+      @keyframes pulseAnimation {
+        0%, 100% { opacity: 1; transform: scale(1); }
+        50% { opacity: 0.4; transform: scale(0.85); }
+      }
+
+      .eq-bar-1 { animation: eq1 1s infinite alternate ease-in-out; transform-origin: bottom; }
+      .eq-bar-2 { animation: eq2 0.7s infinite alternate ease-in-out 0.1s; transform-origin: bottom; }
+      .eq-bar-3 { animation: eq3 1.2s infinite alternate ease-in-out 0.2s; transform-origin: bottom; }
+      .eq-bar-4 { animation: eq4 0.8s infinite alternate ease-in-out 0.15s; transform-origin: bottom; }
+      .eq-bar-5 { animation: eq5 0.9s infinite alternate ease-in-out 0.25s; transform-origin: bottom; }
+
+      @keyframes eq1 { 0% { height: 6px; y: 720px; } 100% { height: 26px; y: 700px; } }
+      @keyframes eq2 { 0% { height: 24px; y: 702px; } 100% { height: 8px; y: 718px; } }
+      @keyframes eq3 { 0% { height: 10px; y: 716px; } 100% { height: 30px; y: 696px; } }
+      @keyframes eq4 { 0% { height: 28px; y: 698px; } 100% { height: 12px; y: 714px; } }
+      @keyframes eq5 { 0% { height: 8px; y: 718px; } 100% { height: 22px; y: 704px; } }
+
+      .disc-spin {
+        animation: spin 8s linear infinite;
+        transform-origin: 640px 713px;
+      }
+      @keyframes spin {
+        100% { transform: rotate(360deg); }
+      }
+
+      .chart-line-anim {
+        stroke-dasharray: 600;
+        stroke-dashoffset: 600;
+        animation: drawLine 3s ease-out forwards infinite alternate 1s;
+      }
+      @keyframes drawLine {
+        to { stroke-dashoffset: 0; }
+      }
+
+      .progress-glow {
+        animation: progressPulse 2.5s infinite ease-in-out;
+      }
+      @keyframes progressPulse {
+        0%, 100% { opacity: 0.9; }
+        50% { opacity: 0.5; }
+      }
+    </style>
+  </defs>
+
+  <!-- Background Canvas -->
+  <rect width="1200" height="780" fill="url(#bgGrad)" rx="12" />
+
+  <!-- Grid Blueprint Pattern -->
+  <g stroke="#ffffff" stroke-opacity="0.025" stroke-width="1">
+    <line x1="0" y1="60" x2="1200" y2="60" />
+    <line x1="0" y1="120" x2="1200" y2="120" />
+    <line x1="0" y1="180" x2="1200" y2="180" />
+    <line x1="0" y1="240" x2="1200" y2="240" />
+    <line x1="0" y1="300" x2="1200" y2="300" />
+    <line x1="0" y1="360" x2="1200" y2="360" />
+    <line x1="0" y1="420" x2="1200" y2="420" />
+    <line x1="0" y1="480" x2="1200" y2="480" />
+    <line x1="0" y1="540" x2="1200" y2="540" />
+    <line x1="0" y1="600" x2="1200" y2="600" />
+    <line x1="0" y1="660" x2="1200" y2="660" />
+    
+    <line x1="120" y1="0" x2="120" y2="780" />
+    <line x1="240" y1="0" x2="240" y2="780" />
+    <line x1="360" y1="0" x2="360" y2="780" />
+    <line x1="480" y1="0" x2="480" y2="780" />
+    <line x1="600" y1="0" x2="600" y2="780" />
+    <line x1="720" y1="0" x2="720" y2="780" />
+    <line x1="840" y1="0" x2="840" y2="780" />
+    <line x1="960" y1="0" x2="960" y2="780" />
+    <line x1="1080" y1="0" x2="1080" y2="780" />
+  </g>
+
+  <!-- ===================================================
+       1. Top Navigation Bar (y = 0 to 64)
+       =================================================== -->
+  <rect x="0" y="0" width="1200" height="64" fill="#0b0d13" fill-opacity="0.95" />
+  <line x1="0" y1="64" x2="1200" y2="64" stroke="#ffffff" stroke-opacity="0.08" stroke-width="1" />
+
+  <!-- Window Dots -->
+  <circle cx="28" cy="32" r="5.5" fill="#ef4444" />
+  <circle cx="46" cy="32" r="5.5" fill="#f59e0b" />
+  <circle cx="64" cy="32" r="5.5" fill="#10b981" />
+
+  <!-- Brand Lockup -->
+  <g transform="translate(100, 16)">
+    <!-- Logo Badge -->
+    <rect x="0" y="0" width="32" height="32" rx="6" fill="#161922" stroke="#e63946" stroke-width="1.5" />
+    <text x="7" y="21" font-size="13" font-weight="800" fill="#e63946">CG</text>
+    
+    <!-- Brand Title -->
+    <text x="42" y="15" font-size="15" font-weight="700" fill="#f8fafc" letter-spacing="-0.02em">ComicGarage</text>
+    <text x="42" y="28" font-size="9" font-weight="600" fill="#e63946" letter-spacing="0.08em" font-family="'JetBrains Mono', monospace">私設コミック書庫 // ARCHIVE 01</text>
+  </g>
+
+  <!-- Status Pill (Live Vault Telemetry) -->
+  <g transform="translate(410, 18)">
+    <rect x="0" y="0" width="340" height="28" rx="14" fill="#141720" stroke="#ffffff" stroke-opacity="0.12" stroke-width="1" />
+    <circle cx="16" cy="14" r="3.5" fill="#e63946" class="pulse-dot" />
+    <text x="28" y="18" font-size="10.5" font-weight="600" fill="#94a3b8" font-family="'JetBrains Mono', monospace">
+      <tspan fill="#f8fafc">18</tspan> TITLES  <tspan fill="#64748b">•</tspan>  <tspan fill="#f8fafc">142</tspan> VOLUMES  <tspan fill="#64748b">•</tspan>  <tspan fill="#34d399">87.5%</tspan> COMPLETE
+    </text>
+  </g>
+
+  <!-- Nav Action Buttons -->
+  <g transform="translate(860, 17)">
+    <!-- BGM Pill -->
+    <rect x="0" y="0" width="96" height="30" rx="15" fill="#161922" stroke="#e63946" stroke-opacity="0.4" stroke-width="1" />
+    <rect x="16" y="18" width="2" height="6" fill="#e63946" rx="1" />
+    <rect x="21" y="14" width="2" height="10" fill="#e63946" rx="1" />
+    <rect x="26" y="16" width="2" height="8" fill="#e63946" rx="1" />
+    <text x="34" y="19" font-size="10.5" font-weight="700" fill="#f8fafc" font-family="'JetBrains Mono', monospace">BGM</text>
+    <rect x="64" y="6" width="24" height="18" rx="4" fill="#10b981" fill-opacity="0.2" />
+    <text x="68" y="18" font-size="9" font-weight="800" fill="#34d399" font-family="'JetBrains Mono', monospace">ON</text>
+
+    <!-- Admin Vault CTA -->
+    <rect x="110" y="0" width="140" height="30" rx="6" fill="url(#crimsonGrad)" filter="url(#subtleGlow)" />
+    <text x="124" y="19" font-size="11.5" font-weight="700" fill="#ffffff">Filament Vault →</text>
+  </g>
+
+  <!-- ===================================================
+       2. Hero Header & Quick Stats (y = 80 to 200)
+       =================================================== -->
+  <g transform="translate(48, 88)">
+    <text x="0" y="16" font-size="10.5" font-weight="700" fill="#e63946" letter-spacing="0.12em" font-family="'JetBrains Mono', monospace">JAPANESE TANKŌBON &amp; GRAPHIC NOVEL VAULT</text>
+    <text x="0" y="52" font-size="28" font-weight="800" fill="#f8fafc" letter-spacing="-0.03em">Curate, Catalog &amp; Track Every Tankōbon.</text>
+    <text x="0" y="78" font-size="13" font-weight="400" fill="#94a3b8">Collector archive with instant volume gap radar, multi-facet filtering, and ambient lofi vibes.</text>
+  </g>
+
+  <!-- 4 Stat Metric Cards -->
+  <g transform="translate(48, 185)">
+    <!-- Metric 1: Total Titles -->
+    <g transform="translate(0, 0)">
+      <rect x="0" y="0" width="155" height="66" rx="8" fill="#0f1118" stroke="#ffffff" stroke-opacity="0.08" />
+      <text x="14" y="28" font-size="20" font-weight="800" fill="#f8fafc">18 <tspan font-size="10" font-weight="600" fill="#e63946" font-family="'JetBrains Mono', monospace">SERIES</tspan></text>
+      <text x="14" y="50" font-size="10" font-weight="600" fill="#64748b" font-family="'JetBrains Mono', monospace">TOTAL TITLES</text>
+    </g>
+
+    <!-- Metric 2: Total Volumes -->
+    <g transform="translate(170, 0)">
+      <rect x="0" y="0" width="155" height="66" rx="8" fill="#0f1118" stroke="#ffffff" stroke-opacity="0.08" />
+      <text x="14" y="28" font-size="20" font-weight="800" fill="#f8fafc">142 <tspan font-size="10" font-weight="600" fill="#3b82f6" font-family="'JetBrains Mono', monospace">VOLS</tspan></text>
+      <text x="14" y="50" font-size="10" font-weight="600" fill="#64748b" font-family="'JetBrains Mono', monospace">TRACKED BOOKS</text>
+    </g>
+
+    <!-- Metric 3: Completion Rate -->
+    <g transform="translate(340, 0)">
+      <rect x="0" y="0" width="155" height="66" rx="8" fill="#0f1118" stroke="#ffffff" stroke-opacity="0.08" />
+      <text x="14" y="28" font-size="20" font-weight="800" fill="#34d399">87.5<tspan font-size="13">%</tspan></text>
+      <text x="14" y="50" font-size="10" font-weight="600" fill="#64748b" font-family="'JetBrains Mono', monospace">COMPLETION RATE</text>
+    </g>
+
+    <!-- Metric 4: Incomplete Runs -->
+    <g transform="translate(510, 0)">
+      <rect x="0" y="0" width="155" height="66" rx="8" fill="#0f1118" stroke="#ffffff" stroke-opacity="0.08" />
+      <text x="14" y="28" font-size="20" font-weight="800" fill="#fbbf24">4 <tspan font-size="10" font-weight="600" fill="#fbbf24" font-family="'JetBrains Mono', monospace">GAPS</tspan></text>
+      <text x="14" y="50" font-size="10" font-weight="600" fill="#64748b" font-family="'JetBrains Mono', monospace">ONGOING RUNS</text>
+    </g>
+
+    <!-- Metric 5: Total Investment -->
+    <g transform="translate(680, 0)">
+      <rect x="0" y="0" width="200" height="66" rx="8" fill="#0f1118" stroke="#ffffff" stroke-opacity="0.08" />
+      <text x="14" y="28" font-size="17" font-weight="800" fill="#34d399">Rp 4.250.000</text>
+      <text x="14" y="50" font-size="10" font-weight="600" fill="#64748b" font-family="'JetBrains Mono', monospace">TOTAL INVESTASI</text>
+    </g>
+
+    <!-- Metric 6: Monthly Spend -->
+    <g transform="translate(895, 0)">
+      <rect x="0" y="0" width="205" height="66" rx="8" fill="#0f1118" stroke="#ffffff" stroke-opacity="0.08" />
+      <text x="14" y="28" font-size="17" font-weight="800" fill="#f8fafc">Rp 450.000 <tspan font-size="11" font-weight="700" fill="#34d399">↑</tspan></text>
+      <text x="14" y="50" font-size="10" font-weight="600" fill="#64748b" font-family="'JetBrains Mono', monospace">BELANJA BULAN INI</text>
+    </g>
+  </g>
+
+  <!-- ===================================================
+       3. Main Interactive Showcase Grid (y = 270 to 660)
+       =================================================== -->
+
+  <!-- LEFT CARD: Manga Vault Shelf & Volume Gap Radar -->
+  <g transform="translate(48, 270)">
+    <rect x="0" y="0" width="535" height="390" rx="12" fill="url(#cardGrad)" stroke="#ffffff" stroke-opacity="0.12" />
+    
+    <!-- Card Header -->
+    <g transform="translate(20, 18)">
+      <rect x="0" y="0" width="22" height="22" rx="4" fill="#1e222e" stroke="#e63946" stroke-width="1" />
+      <text x="6" y="16" font-size="12" fill="#e63946">⚡</text>
+      <text x="30" y="16" font-size="14" font-weight="700" fill="#f8fafc">Volume Gap Radar &amp; Instant Search</text>
+      <text x="430" y="16" font-size="10" font-weight="600" fill="#e63946" font-family="'JetBrains Mono', monospace">LIVE RADAR</text>
+    </g>
+    <line x1="20" y1="50" x2="515" y2="50" stroke="#ffffff" stroke-opacity="0.08" />
+
+    <!-- Interactive Search Bar Mockup -->
+    <g transform="translate(20, 62)">
+      <rect x="0" y="0" width="495" height="32" rx="6" fill="#090a0f" stroke="#e63946" stroke-width="1.5" />
+      <text x="12" y="21" font-size="12" fill="#94a3b8">🔍</text>
+      <text x="34" y="21" font-size="12" font-weight="600" fill="#f8fafc">chainsaw</text>
+      <line x1="96" y1="8" x2="96" y2="24" stroke="#e63946" stroke-width="2" />
+      <rect x="435" y="6" width="48" height="20" rx="4" fill="#161922" />
+      <text x="444" y="19" font-size="9.5" font-weight="700" fill="#94a3b8" font-family="'JetBrains Mono', monospace">KEY /</text>
+    </g>
+
+    <!-- Genre & Status Filters -->
+    <g transform="translate(20, 104)">
+      <rect x="0" y="0" width="60" height="22" rx="11" fill="#161922" stroke="#ffffff" stroke-opacity="0.1" />
+      <text x="12" y="15" font-size="9.5" font-weight="600" fill="#94a3b8">ALL (18)</text>
+
+      <rect x="68" y="0" width="85" height="22" rx="11" fill="#e63946" fill-opacity="0.15" stroke="#e63946" stroke-width="1" />
+      <text x="78" y="15" font-size="9.5" font-weight="700" fill="#ff4d5a">SHOUNEN (8)</text>
+
+      <rect x="160" y="0" width="80" height="22" rx="11" fill="#161922" stroke="#ffffff" stroke-opacity="0.1" />
+      <text x="172" y="15" font-size="9.5" font-weight="600" fill="#94a3b8">SEINEN (5)</text>
+
+      <rect x="248" y="0" width="80" height="22" rx="11" fill="#161922" stroke="#ffffff" stroke-opacity="0.1" />
+      <text x="260" y="15" font-size="9.5" font-weight="600" fill="#94a3b8">HORROR (3)</text>
+
+      <rect x="375" y="0" width="120" height="22" rx="4" fill="#f59e0b" fill-opacity="0.12" stroke="#f59e0b" stroke-opacity="0.3" />
+      <text x="385" y="15" font-size="9" font-weight="700" fill="#fbbf24" font-family="'JetBrains Mono', monospace">● 4 MISSING GAPS</text>
+    </g>
+
+    <!-- Filtered Manga Card (Chainsaw Man Spotlight) -->
+    <g transform="translate(20, 140)">
+      <rect x="0" y="0" width="495" height="150" rx="8" fill="#12151f" stroke="#ffffff" stroke-opacity="0.1" />
+      
+      <!-- Manga Book Cover Mockup -->
+      <rect x="12" y="12" width="90" height="126" rx="6" fill="#1a1e2b" stroke="#e63946" stroke-width="1" />
+      <rect x="12" y="12" width="90" height="22" fill="#e63946" rx="5" />
+      <text x="24" y="27" font-size="8.5" font-weight="800" fill="#ffffff" font-family="'JetBrains Mono', monospace">JUMP COMICS</text>
+      <text x="22" y="65" font-size="12" font-weight="800" fill="#ffffff">CHAINSAW</text>
+      <text x="38" y="82" font-size="12" font-weight="800" fill="#e63946">MAN</text>
+      <text x="20" y="115" font-size="8" font-weight="600" fill="#94a3b8">TATSUKI FUJIMOTO</text>
+
+      <!-- Details -->
+      <g transform="translate(115, 16)">
+        <text x="0" y="12" font-size="9" font-weight="700" fill="#f59e0b" font-family="'JetBrains Mono', monospace">SHOUNEN / DARK FANTASY</text>
+        <text x="0" y="32" font-size="16" font-weight="800" fill="#f8fafc">Chainsaw Man (チェンソーマン)</text>
+        <text x="0" y="50" font-size="11" font-weight="500" fill="#94a3b8">Story &amp; Art by Tatsuki Fujimoto • Shueisha</text>
+        
+        <!-- Progress Bar -->
+        <text x="0" y="74" font-size="10.5" font-weight="700" fill="#34d399">14 / 16 Volumes Collected (87.5%)</text>
+        <rect x="0" y="82" width="365" height="6" rx="3" fill="#090a0f" />
+        <rect x="0" y="82" width="320" height="6" rx="3" fill="url(#crimsonGrad)" class="progress-glow" />
+
+        <!-- Missing Alert -->
+        <rect x="0" y="98" width="220" height="24" rx="4" fill="#ef4444" fill-opacity="0.12" stroke="#ef4444" stroke-opacity="0.3" />
+        <text x="10" y="114" font-size="9.5" font-weight="700" fill="#ff6b6b" font-family="'JetBrains Mono', monospace">GAP: MISSING VOL. 5 &amp; VOL. 12</text>
+
+        <!-- Inspect Button -->
+        <rect x="235" y="98" width="130" height="24" rx="4" fill="#e63946" />
+        <text x="250" y="114" font-size="10" font-weight="700" fill="#ffffff">Inspect Volumes ↗</text>
+      </g>
+    </g>
+
+    <!-- Volume Pills Row -->
+    <g transform="translate(20, 305)">
+      <text x="0" y="14" font-size="10" font-weight="700" fill="#94a3b8" font-family="'JetBrains Mono', monospace">VOLUMES:</text>
+      
+      <!-- 16 volume chips -->
+      <!-- Vol 1 to 4 (Green) -->
+      <rect x="70" y="2" width="22" height="18" rx="3" fill="#10b981" fill-opacity="0.18" stroke="#10b981" stroke-opacity="0.5" />
+      <text x="74" y="15" font-size="9" font-weight="700" fill="#34d399" font-family="'JetBrains Mono', monospace">v1</text>
+
+      <rect x="96" y="2" width="22" height="18" rx="3" fill="#10b981" fill-opacity="0.18" stroke="#10b981" stroke-opacity="0.5" />
+      <text x="100" y="15" font-size="9" font-weight="700" fill="#34d399" font-family="'JetBrains Mono', monospace">v2</text>
+
+      <rect x="122" y="2" width="22" height="18" rx="3" fill="#10b981" fill-opacity="0.18" stroke="#10b981" stroke-opacity="0.5" />
+      <text x="126" y="15" font-size="9" font-weight="700" fill="#34d399" font-family="'JetBrains Mono', monospace">v3</text>
+
+      <rect x="148" y="2" width="22" height="18" rx="3" fill="#10b981" fill-opacity="0.18" stroke="#10b981" stroke-opacity="0.5" />
+      <text x="152" y="15" font-size="9" font-weight="700" fill="#34d399" font-family="'JetBrains Mono', monospace">v4</text>
+
+      <!-- Vol 5 (RED MISSING) -->
+      <rect x="174" y="2" width="22" height="18" rx="3" fill="#e63946" stroke="#ff4d5a" stroke-width="1.5" />
+      <text x="178" y="15" font-size="9" font-weight="800" fill="#ffffff" font-family="'JetBrains Mono', monospace">v5</text>
+
+      <!-- Vol 6 to 11 (Green) -->
+      <rect x="200" y="2" width="22" height="18" rx="3" fill="#10b981" fill-opacity="0.18" stroke="#10b981" stroke-opacity="0.5" />
+      <text x="204" y="15" font-size="9" font-weight="700" fill="#34d399" font-family="'JetBrains Mono', monospace">v6</text>
+
+      <rect x="226" y="2" width="22" height="18" rx="3" fill="#10b981" fill-opacity="0.18" stroke="#10b981" stroke-opacity="0.5" />
+      <text x="230" y="15" font-size="9" font-weight="700" fill="#34d399" font-family="'JetBrains Mono', monospace">v7</text>
+
+      <rect x="252" y="2" width="22" height="18" rx="3" fill="#10b981" fill-opacity="0.18" stroke="#10b981" stroke-opacity="0.5" />
+      <text x="256" y="15" font-size="9" font-weight="700" fill="#34d399" font-family="'JetBrains Mono', monospace">v8</text>
+
+      <rect x="278" y="2" width="22" height="18" rx="3" fill="#10b981" fill-opacity="0.18" stroke="#10b981" stroke-opacity="0.5" />
+      <text x="282" y="15" font-size="9" font-weight="700" fill="#34d399" font-family="'JetBrains Mono', monospace">v9</text>
+
+      <rect x="304" y="2" width="26" height="18" rx="3" fill="#10b981" fill-opacity="0.18" stroke="#10b981" stroke-opacity="0.5" />
+      <text x="307" y="15" font-size="9" font-weight="700" fill="#34d399" font-family="'JetBrains Mono', monospace">v10</text>
+
+      <rect x="334" y="2" width="26" height="18" rx="3" fill="#10b981" fill-opacity="0.18" stroke="#10b981" stroke-opacity="0.5" />
+      <text x="337" y="15" font-size="9" font-weight="700" fill="#34d399" font-family="'JetBrains Mono', monospace">v11</text>
+
+      <!-- Vol 12 (RED MISSING) -->
+      <rect x="364" y="2" width="26" height="18" rx="3" fill="#e63946" stroke="#ff4d5a" stroke-width="1.5" />
+      <text x="367" y="15" font-size="9" font-weight="800" fill="#ffffff" font-family="'JetBrains Mono', monospace">v12</text>
+
+      <!-- Vol 13 to 16 (Green) -->
+      <rect x="394" y="2" width="26" height="18" rx="3" fill="#10b981" fill-opacity="0.18" stroke="#10b981" stroke-opacity="0.5" />
+      <text x="397" y="15" font-size="9" font-weight="700" fill="#34d399" font-family="'JetBrains Mono', monospace">v13</text>
+
+      <rect x="424" y="2" width="26" height="18" rx="3" fill="#10b981" fill-opacity="0.18" stroke="#10b981" stroke-opacity="0.5" />
+      <text x="427" y="15" font-size="9" font-weight="700" fill="#34d399" font-family="'JetBrains Mono', monospace">v14</text>
+
+      <rect x="454" y="2" width="26" height="18" rx="3" fill="#10b981" fill-opacity="0.18" stroke="#10b981" stroke-opacity="0.5" />
+      <text x="457" y="15" font-size="9" font-weight="700" fill="#34d399" font-family="'JetBrains Mono', monospace">v15</text>
+
+      <rect x="484" y="2" width="26" height="18" rx="3" fill="#10b981" fill-opacity="0.18" stroke="#10b981" stroke-opacity="0.5" />
+      <text x="487" y="15" font-size="9" font-weight="700" fill="#34d399" font-family="'JetBrains Mono', monospace">v16</text>
+    </g>
+
+    <!-- Bottom Tip -->
+    <g transform="translate(20, 350)">
+      <rect x="0" y="0" width="495" height="26" rx="4" fill="#0b0d13" />
+      <text x="12" y="17" font-size="9.5" font-weight="500" fill="#64748b">Tip: Take this checklist to bookstore visits to never buy duplicate tankōbon volumes.</text>
+    </g>
+  </g>
+
+  <!-- RIGHT CARD: Filament v3 Admin Dashboard & Analytics -->
+  <g transform="translate(615, 270)">
+    <rect x="0" y="0" width="535" height="390" rx="12" fill="url(#cardGrad)" stroke="#ffffff" stroke-opacity="0.12" />
+    
+    <!-- Card Header -->
+    <g transform="translate(20, 18)">
+      <rect x="0" y="0" width="22" height="22" rx="4" fill="#1e222e" stroke="#f59e0b" stroke-width="1" />
+      <text x="6" y="16" font-size="12" fill="#f59e0b">📈</text>
+      <text x="30" y="16" font-size="14" font-weight="700" fill="#f8fafc">Filament v3 Analytics &amp; Purchases Ledger</text>
+      <text x="430" y="16" font-size="10" font-weight="600" fill="#34d399" font-family="'JetBrains Mono', monospace">ADMIN PANEL</text>
+    </g>
+    <line x1="20" y1="50" x2="515" y2="50" stroke="#ffffff" stroke-opacity="0.08" />
+
+    <!-- Mini Chart Section 1: Growth Trend Line Chart -->
+    <g transform="translate(20, 65)">
+      <rect x="0" y="0" width="310" height="175" rx="8" fill="#0f1118" stroke="#ffffff" stroke-opacity="0.08" />
+      <text x="14" y="20" font-size="11" font-weight="700" fill="#f8fafc">Growth Trend: Volumes &amp; Purchases</text>
+      <text x="245" y="20" font-size="9" font-weight="600" fill="#f59e0b" font-family="'JetBrains Mono', monospace">[ 6 Months ]</text>
+
+      <!-- Grid lines -->
+      <line x1="25" y1="50" x2="290" y2="50" stroke="#ffffff" stroke-opacity="0.05" />
+      <line x1="25" y1="80" x2="290" y2="80" stroke="#ffffff" stroke-opacity="0.05" />
+      <line x1="25" y1="110" x2="290" y2="110" stroke="#ffffff" stroke-opacity="0.05" />
+      <line x1="25" y1="140" x2="290" y2="140" stroke="#ffffff" stroke-opacity="0.05" />
+
+      <!-- Line 1: Blue Volumes Added -->
+      <polyline points="35,130 80,115 130,95 180,75 230,55 280,38" fill="none" stroke="#3b82f6" stroke-width="2.5" class="chart-line-anim" />
+      <circle cx="35" cy="130" r="3" fill="#3b82f6" />
+      <circle cx="80" cy="115" r="3" fill="#3b82f6" />
+      <circle cx="130" cy="95" r="3" fill="#3b82f6" />
+      <circle cx="180" cy="75" r="3" fill="#3b82f6" />
+      <circle cx="230" cy="55" r="3" fill="#3b82f6" />
+      <circle cx="280" cy="38" r="3.5" fill="#3b82f6" filter="url(#subtleGlow)" />
+
+      <!-- Line 2: Green Purchases -->
+      <polyline points="35,138 80,128 130,110 180,95 230,80 280,60" fill="none" stroke="#10b981" stroke-width="2.5" stroke-dasharray="3,3" />
+      <circle cx="280" cy="60" r="3.5" fill="#10b981" />
+
+      <!-- Legend & Month Labels -->
+      <text x="30" y="160" font-size="8.5" font-weight="600" fill="#64748b" font-family="'JetBrains Mono', monospace">Apr    May    Jun    Jul    Aug    Sep</text>
+    </g>
+
+    <!-- Mini Chart Section 2: Genre Doughnut Chart -->
+    <g transform="translate(340, 65)">
+      <rect x="0" y="0" width="175" height="175" rx="8" fill="#0f1118" stroke="#ffffff" stroke-opacity="0.08" />
+      <text x="14" y="20" font-size="11" font-weight="700" fill="#f8fafc">Genre Breakdown</text>
+
+      <!-- Doughnut SVG Circles -->
+      <g transform="translate(87, 85)">
+        <circle cx="0" cy="0" r="42" fill="none" stroke="#10b981" stroke-width="16" stroke-dasharray="118 264" transform="rotate(-90)" />
+        <circle cx="0" cy="0" r="42" fill="none" stroke="#f59e0b" stroke-width="16" stroke-dasharray="78 264" stroke-dashoffset="-118" transform="rotate(-90)" />
+        <circle cx="0" cy="0" r="42" fill="none" stroke="#ef4444" stroke-width="16" stroke-dasharray="40 264" stroke-dashoffset="-196" transform="rotate(-90)" />
+        <circle cx="0" cy="0" r="42" fill="none" stroke="#3b82f6" stroke-width="16" stroke-dasharray="28 264" stroke-dashoffset="-236" transform="rotate(-90)" />
+        <text x="0" y="4" font-size="11" font-weight="800" fill="#f8fafc" text-anchor="middle">18</text>
+      </g>
+
+      <!-- Doughnut Legend -->
+      <text x="14" y="146" font-size="8.5" font-weight="600" fill="#34d399">■ Shounen (45%)</text>
+      <text x="96" y="146" font-size="8.5" font-weight="600" fill="#fbbf24">■ Seinen (30%)</text>
+      <text x="14" y="162" font-size="8.5" font-weight="600" fill="#ff6b6b">■ Horror (15%)</text>
+      <text x="96" y="162" font-size="8.5" font-weight="600" fill="#60a5fa">■ America (10%)</text>
+    </g>
+
+    <!-- Recent Acquisition Table Ledger -->
+    <g transform="translate(20, 250)">
+      <rect x="0" y="0" width="495" height="125" rx="8" fill="#0f1118" stroke="#ffffff" stroke-opacity="0.08" />
+      <text x="14" y="18" font-size="10.5" font-weight="700" fill="#f8fafc">Recent Purchases Ledger (Live Bookkeeping)</text>
+      
+      <!-- Table Header -->
+      <g transform="translate(14, 28)">
+        <text x="0" y="10" font-size="8.5" font-weight="700" fill="#64748b" font-family="'JetBrains Mono', monospace">TITLE &amp; VOLUME</text>
+        <text x="180" y="10" font-size="8.5" font-weight="700" fill="#64748b" font-family="'JetBrains Mono', monospace">PRICE</text>
+        <text x="270" y="10" font-size="8.5" font-weight="700" fill="#64748b" font-family="'JetBrains Mono', monospace">STORE</text>
+        <text x="390" y="10" font-size="8.5" font-weight="700" fill="#64748b" font-family="'JetBrains Mono', monospace">DATE</text>
+        <line x1="0" y1="16" x2="465" y2="16" stroke="#ffffff" stroke-opacity="0.06" />
+      </g>
+
+      <!-- Row 1 -->
+      <g transform="translate(14, 52)">
+        <text x="0" y="10" font-size="9.5" font-weight="600" fill="#f8fafc">Chainsaw Man <tspan fill="#e63946" font-family="'JetBrains Mono', monospace">Vol. 14</tspan></text>
+        <text x="180" y="10" font-size="9.5" font-weight="700" fill="#34d399" font-family="'JetBrains Mono', monospace">Rp 45.000</text>
+        <text x="270" y="10" font-size="9.5" font-weight="500" fill="#94a3b8">Gramedia Official</text>
+        <text x="390" y="10" font-size="9" font-weight="500" fill="#64748b" font-family="'JetBrains Mono', monospace">24 Sep 2026</text>
+      </g>
+
+      <!-- Row 2 -->
+      <g transform="translate(14, 76)">
+        <text x="0" y="10" font-size="9.5" font-weight="600" fill="#f8fafc">Jujutsu Kaisen <tspan fill="#e63946" font-family="'JetBrains Mono', monospace">Vol. 25</tspan></text>
+        <text x="180" y="10" font-size="9.5" font-weight="700" fill="#34d399" font-family="'JetBrains Mono', monospace">Rp 48.000</text>
+        <text x="270" y="10" font-size="9.5" font-weight="500" fill="#94a3b8">Tokopedia</text>
+        <text x="390" y="10" font-size="9" font-weight="500" fill="#64748b" font-family="'JetBrains Mono', monospace">20 Sep 2026</text>
+      </g>
+
+      <!-- Row 3 -->
+      <g transform="translate(14, 100)">
+        <text x="0" y="10" font-size="9.5" font-weight="600" fill="#f8fafc">Berserk Deluxe <tspan fill="#e63946" font-family="'JetBrains Mono', monospace">Vol. 14</tspan></text>
+        <text x="180" y="10" font-size="9.5" font-weight="700" fill="#34d399" font-family="'JetBrains Mono', monospace">Rp 550.000</text>
+        <text x="270" y="10" font-size="9.5" font-weight="500" fill="#94a3b8">Kinokuniya Import</text>
+        <text x="390" y="10" font-size="9" font-weight="500" fill="#64748b" font-family="'JetBrains Mono', monospace">12 Sep 2026</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- ===================================================
+       4. Bottom Cyber-Deck: Ambient Lo-Fi YouTube Player
+       =================================================== -->
+  <g transform="translate(48, 680)">
+    <rect x="0" y="0" width="1102" height="78" rx="10" fill="#0d0f16" stroke="#e63946" stroke-opacity="0.35" filter="url(#subtleGlow)" />
+    
+    <!-- Top glowing accent line -->
+    <rect x="0" y="0" width="1102" height="2" fill="url(#crimsonGrad)" />
+
+    <!-- Station Badge & Indicator -->
+    <g transform="translate(20, 20)">
+      <circle cx="6" cy="18" r="4.5" fill="#10b981" class="pulse-dot" />
+      <text x="18" y="16" font-size="12" font-weight="800" fill="#f8fafc">SOUND VAULT // BGM</text>
+      <text x="18" y="32" font-size="9.5" font-weight="600" fill="#e63946" font-family="'JetBrains Mono', monospace">環境音楽 • 24/7 LIVE STREAM</text>
+    </g>
+
+    <!-- 4 Station Chips -->
+    <g transform="translate(220, 24)">
+      <!-- Station 1 Active -->
+      <rect x="0" y="0" width="105" height="28" rx="6" fill="#e63946" fill-opacity="0.2" stroke="#e63946" stroke-width="1.5" />
+      <text x="10" y="18" font-size="10" font-weight="800" fill="#ffffff">⚡ Lofi Live</text>
+
+      <!-- Station 2 -->
+      <rect x="115" y="0" width="105" height="28" rx="6" fill="#161922" stroke="#ffffff" stroke-opacity="0.1" />
+      <text x="125" y="18" font-size="10" font-weight="600" fill="#94a3b8">🌸 Ghibli Lofi</text>
+
+      <!-- Station 3 -->
+      <rect x="230" y="0" width="105" height="28" rx="6" fill="#161922" stroke="#ffffff" stroke-opacity="0.1" />
+      <text x="240" y="18" font-size="10" font-weight="600" fill="#94a3b8">🌙 4 A.M Chill</text>
+
+      <!-- Station 4 -->
+      <rect x="345" y="0" width="105" height="28" rx="6" fill="#161922" stroke="#ffffff" stroke-opacity="0.1" />
+      <text x="355" y="18" font-size="10" font-weight="600" fill="#94a3b8">📻 User Mix</text>
+    </g>
+
+    <!-- Equalizer Animation Bars -->
+    <g transform="translate(690, -680)">
+      <rect x="0" y="718" width="4" height="12" fill="#e63946" rx="2" class="eq-bar-1" />
+      <rect x="7" y="710" width="4" height="20" fill="#e63946" rx="2" class="eq-bar-2" />
+      <rect x="14" y="704" width="4" height="26" fill="#e63946" rx="2" class="eq-bar-3" />
+      <rect x="21" y="712" width="4" height="18" fill="#e63946" rx="2" class="eq-bar-4" />
+      <rect x="28" y="720" width="4" height="10" fill="#e63946" rx="2" class="eq-bar-5" />
+    </g>
+
+    <!-- Rotating Vinyl Disc Art -->
+    <g transform="translate(735, 18)">
+      <circle cx="20" cy="20" r="20" fill="#161922" stroke="#e63946" stroke-width="1.5" />
+      <circle cx="20" cy="20" r="14" fill="#090a0f" stroke="#ffffff" stroke-opacity="0.1" />
+      <circle cx="20" cy="20" r="5" fill="#e63946" />
+      <line x1="6" y1="20" x2="34" y2="20" stroke="#ffffff" stroke-opacity="0.2" class="disc-spin" />
+    </g>
+
+    <!-- Now Playing Title & Scrubber -->
+    <g transform="translate(785, 20)">
+      <text x="0" y="13" font-size="11" font-weight="700" fill="#f8fafc">Lofi Girl • 24/7 Anime Lofi Beats</text>
+      <text x="0" y="27" font-size="9" font-weight="500" fill="#64748b" font-family="'JetBrains Mono', monospace">ID: jfKfPfyJRdk  |  Active Audio Stream</text>
+      
+      <!-- Mini Progress -->
+      <rect x="0" y="34" width="180" height="4" rx="2" fill="#161922" />
+      <rect x="0" y="34" width="125" height="4" rx="2" fill="url(#crimsonGrad)" />
+      <circle cx="125" cy="36" r="4" fill="#ffffff" />
+    </g>
+
+    <!-- Deck Controls: Hotkey M & Master Controls -->
+    <g transform="translate(980, 22)">
+      <!-- Play/Pause Button -->
+      <circle cx="18" cy="18" r="18" fill="#e63946" filter="url(#subtleGlow)" />
+      <rect x="12" y="11" width="4" height="14" rx="1" fill="#ffffff" />
+      <rect x="20" y="11" width="4" height="14" rx="1" fill="#ffffff" />
+
+      <!-- Hotkey Badge -->
+      <rect x="48" y="5" width="58" height="26" rx="4" fill="#161922" stroke="#f59e0b" stroke-opacity="0.6" />
+      <text x="56" y="22" font-size="10" font-weight="800" fill="#fbbf24" font-family="'JetBrains Mono', monospace">KEY [M]</text>
+    </g>
+  </g>
+</svg>
